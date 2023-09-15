@@ -1,0 +1,13 @@
+___*
+.idea
+*.egg-info
+*.pyc
+build
+node_modules
+production.env
+prod.env
+local.env
+stage.env
+development.env
+dev.env
+venv
