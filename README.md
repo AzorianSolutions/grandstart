@@ -14,7 +14,7 @@ git clone https://github.com/AzorianSolutions/grandstart.git
 cd grandstart
 ./deploy/bare-metal/linux/debian.sh
 source venv/bin/activate
-grandstart run
+grandstart run -i /path/to/input.csv -o /path/to/output/directory
 ```
 
 ## TL;DR - Windows
@@ -38,7 +38,7 @@ Then, run the following commands each time you want to activate the project for 
 cd C:/Path/To/Project/Root
 venv\Scripts\activate
 for /F %A in (deploy\config\production.env) do SET %A
-grandstart run
+grandstart run -i C:/Path/To/Input.csv -o C:/Path/To/Output/Directory
 ```
 
 ## Project Documentation
