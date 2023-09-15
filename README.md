@@ -1,6 +1,7 @@
 # Grandstart
 
-About
+[![CodeQL](https://github.com/AzorianSolutions/grandstart/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/AzorianSolutions/grandstart/actions/workflows/codeql-analysis.yml)
+
 This project provides a simple CLI tool to generate Grandstream HT-812, HT-814, and HT-818 configuration files
 from a CSV dataset.
 
