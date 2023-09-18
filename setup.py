@@ -8,6 +8,7 @@ setup(
         'click==8.1.3',
         'cryptography==39.0.1',
         'inotify==0.2.10',
+        'jinja2==3.1.2',
         'loguru==0.7.0',
         'passlib[bcrypt]==1.7.4',
         'pyyaml==6.0',
