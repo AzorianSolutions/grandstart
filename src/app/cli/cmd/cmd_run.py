@@ -127,9 +127,9 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
 
                     device_id: str = f"{subscriber_id}-{demarcation_id}-ht818-{i + 1}"
                     config_path: Path = Path(output_path / (device_id + '.cfg'))
-                    last_index: int = max(7, len(remaining_lines) - 1)
+                    last_index: int = max(7, min(0, len(remaining_lines) - 1))
                     config_data: dict = {
-                        'lines': remaining_lines[0:last_index],
+                        'lines': remaining_lines[0:last_index + 1],
                     }
 
                     # Cache a reference for the device configuration, and it's output path
@@ -148,9 +148,9 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
 
                     device_id: str = f"{subscriber_id}-{demarcation_id}-ht814-{i + 1}"
                     config_path: Path = Path(output_path / (device_id + '.cfg'))
-                    last_index: int = max(3, len(remaining_lines) - 1)
+                    last_index: int = max(3, min(0, len(remaining_lines) - 1))
                     config_data: dict = {
-                        'lines': remaining_lines[0:last_index],
+                        'lines': remaining_lines[0:last_index + 1],
                     }
 
                     # Cache a reference for the device configuration, and it's output path
@@ -169,9 +169,9 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
 
                     device_id: str = f"{subscriber_id}-{demarcation_id}-ht812-{i + 1}"
                     config_path: Path = Path(output_path / (device_id + '.cfg'))
-                    last_index: int = max(1, len(remaining_lines) - 1)
+                    last_index: int = max(1, min(0, len(remaining_lines) - 1))
                     config_data: dict = {
-                        'lines': remaining_lines[0:last_index],
+                        'lines': remaining_lines[0:last_index + 1],
                     }
 
                     # Cache a reference for the device configuration, and it's output path
