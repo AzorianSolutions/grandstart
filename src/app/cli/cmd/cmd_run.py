@@ -10,10 +10,29 @@ from app.lib.util.template_builder import TemplateBuilder
 
 
 def calculate_devices(total_lines: int) -> tuple[int, int, int, int]:
-    total_ht818: int = max(1 if 4 < total_lines < 8 else math.floor(total_lines / 8), 0)
-    total_ht814: int = max(math.floor((total_lines - total_ht818 * 8) / 4), 0)
-    total_ht812: int = max(math.ceil((total_lines - (total_ht818 * 8) - (total_ht814 * 4)) / 2), 0)
+    remaining_lines: int
+    total_ht818: int
+    total_ht814: int
+    total_ht812: int
+
+    if 4 < total_lines < 8:
+        total_ht818 = 1
+    else:
+        total_ht818 = max(0, math.floor(total_lines / 8))
+
+    remaining_lines = max(0, total_lines - (total_ht818 * 8))
+
+    if 3 <= total_lines <= 4:
+        total_ht814 = 1
+    else:
+        total_ht814 = max(0, math.floor(remaining_lines / 4))
+
+    remaining_lines = max(0, remaining_lines - (total_ht814 * 4))
+
+    total_ht812 = max(0, math.ceil(remaining_lines / 2))
+
     total_devices = total_ht812 + total_ht814 + total_ht818
+
     return total_devices, total_ht812, total_ht814, total_ht818
 
 
@@ -69,6 +88,8 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
         total_subscriber_ht812: int = 0
         total_subscriber_ht814: int = 0
         total_subscriber_ht818: int = 0
+
+        logger.trace('*' * 80)
 
         if not ctx.settings.use_demarcation_id:
             # Automatically determine the spread of lines across the devices using the most conservative approach
@@ -183,9 +204,19 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
                     logger.trace(f"Subscriber: {subscriber_id}; Location: {demarcation_id}; Device: {device_id}; "
                                  + f"Lines: {len(config_data['lines'])};")
 
-        logger.debug(
+                logger.trace('~' * 80)
+
+        logger.trace(
             f"Subscriber: {subscriber_id}; Total Lines: {total_lines}; Total Devices: {total_subscriber_devices}; "
             + f"HT812: {total_subscriber_ht812}; HT814: {total_subscriber_ht814}; HT818: {total_subscriber_ht818};")
+
+        logger.trace('*' * 80)
+
+    # Remove existing device configuration files from the "output_path" directory
+    for file in os.listdir(output_path):
+        file_path: Path = Path(output_path / file)
+        if file_path.is_file() and file.endswith('.cfg'):
+            os.remove(file_path)
 
     # Write the device configuration files to disk
     for config_path, config_contents in output.items():
