@@ -24,7 +24,7 @@ class AppSettings(BaseSettings):
     root_path: str = str(ROOT_PATH)
     salt: str | None = None
     secret_key: str = 'INSECURE-CHANGE-ME-6up8zksTD6mi4N3z3zFk'
-    use_location_id: bool = False
+    use_demarcation_id: bool = False
 
     version: str = '0.1.0'
     """ The application version number """

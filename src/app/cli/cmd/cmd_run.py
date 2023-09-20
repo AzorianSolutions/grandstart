@@ -70,7 +70,7 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
         total_subscriber_ht814: int = 0
         total_subscriber_ht818: int = 0
 
-        if not ctx.settings.use_location_id:
+        if not ctx.settings.use_demarcation_id:
             # Automatically determine the spread of lines across the devices using the most conservative approach
             total_devices, total_ht812, total_ht814, total_ht818 = calculate_devices(total_lines)
             total_subscriber_devices += total_devices
@@ -85,16 +85,16 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
             location_map: dict = {}
 
             for line in subscriber_lines:
-                if line['LOCATION_ID'] not in location_map:
-                    location_map[line['LOCATION_ID']] = []
+                if line['DEMARCATION_ID'] not in location_map:
+                    location_map[line['DEMARCATION_ID']] = []
 
-                location_map[line['LOCATION_ID']].append(line)
+                location_map[line['DEMARCATION_ID']].append(line)
 
-            for location_id, location_lines in location_map.items():
+            for demarcation_id, location_lines in location_map.items():
                 total_location_lines: int = len(location_lines)
 
-                if location_id == '':
-                    location_id = 'DEFAULT'
+                if demarcation_id == '':
+                    demarcation_id = 'DEFAULT'
 
                 total_ht812: int = 0
                 total_ht814: int = 0
@@ -113,7 +113,7 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
                         counters = update_counters(counters, total_devices, total_ht812, total_ht814, total_ht818)
 
                         logger.trace(
-                            f"Subscriber: {subscriber_id}; Location: {location_id}; "
+                            f"Subscriber: {subscriber_id}; Location: {demarcation_id}; "
                             + f"Total Lines: {total_location_lines}; Total Devices: {total_devices}; "
                             + f"HT812: {total_ht812}; HT814: {total_ht814}; HT818: {total_ht818};")
 
@@ -125,7 +125,7 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
                     if len(remaining_lines) < 1:
                         break
 
-                    device_id: str = f"{subscriber_id}-{location_id}-ht818-{i + 1}"
+                    device_id: str = f"{subscriber_id}-{demarcation_id}-ht818-{i + 1}"
                     config_path: Path = Path(output_path / (device_id + '.cfg'))
                     last_index: int = max(7, len(remaining_lines) - 1)
                     config_data: dict = {
@@ -138,7 +138,7 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
                     # Remove the lines that were just processed
                     remaining_lines = remaining_lines[last_index + 1:]
 
-                    logger.trace(f"Subscriber: {subscriber_id}; Location: {location_id}; Device: {device_id}; "
+                    logger.trace(f"Subscriber: {subscriber_id}; Location: {demarcation_id}; Device: {device_id}; "
                                  + f"Lines: {len(config_data['lines'])};")
 
                 # Build device configuration files from templates for Grandstream HT814 devices
@@ -146,7 +146,7 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
                     if len(remaining_lines) < 1:
                         break
 
-                    device_id: str = f"{subscriber_id}-{location_id}-ht814-{i + 1}"
+                    device_id: str = f"{subscriber_id}-{demarcation_id}-ht814-{i + 1}"
                     config_path: Path = Path(output_path / (device_id + '.cfg'))
                     last_index: int = max(3, len(remaining_lines) - 1)
                     config_data: dict = {
@@ -159,7 +159,7 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
                     # Remove the lines that were just processed
                     remaining_lines = remaining_lines[last_index + 1:]
 
-                    logger.trace(f"Subscriber: {subscriber_id}; Location: {location_id}; Device: {device_id}; "
+                    logger.trace(f"Subscriber: {subscriber_id}; Location: {demarcation_id}; Device: {device_id}; "
                                  + f"Lines: {len(config_data['lines'])};")
 
                 # Build device configuration files from templates for Grandstream HT812 devices
@@ -167,7 +167,7 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
                     if len(remaining_lines) < 1:
                         break
 
-                    device_id: str = f"{subscriber_id}-{location_id}-ht812-{i + 1}"
+                    device_id: str = f"{subscriber_id}-{demarcation_id}-ht812-{i + 1}"
                     config_path: Path = Path(output_path / (device_id + '.cfg'))
                     last_index: int = max(1, len(remaining_lines) - 1)
                     config_data: dict = {
@@ -180,7 +180,7 @@ def cli(ctx: Environment, input_file: Path or str, output_path: Path or str):
                     # Remove the lines that were just processed
                     remaining_lines = remaining_lines[last_index + 1:]
 
-                    logger.trace(f"Subscriber: {subscriber_id}; Location: {location_id}; Device: {device_id}; "
+                    logger.trace(f"Subscriber: {subscriber_id}; Location: {demarcation_id}; Device: {device_id}; "
                                  + f"Lines: {len(config_data['lines'])};")
 
         logger.debug(
